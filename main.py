@@ -8,15 +8,20 @@ import pygame
 
 
 class Color(enum.Enum):
-    # BLUE = (0, 0, 255)
+    BLUE = (0, 0, 255)
     RED = (255, 0, 0)
     GREEN = (0, 255, 0)
 
 law_of_attraction = {
-            (Color.RED, Color.GREEN): 5,
-            (Color.GREEN, Color.GREEN): 5,
-            (Color.RED, Color.RED): 1,
-            (Color.GREEN, Color.RED): -2
+            (Color.BLUE, Color.BLUE): 1,
+            (Color.BLUE, Color.GREEN): 5,
+            (Color.BLUE, Color.RED): 0.1,
+            (Color.GREEN, Color.GREEN): -0.1,
+            (Color.GREEN, Color.BLUE): 2.5,
+            (Color.GREEN, Color.RED): 0.3,
+            (Color.RED, Color.GREEN): 0.5,
+            (Color.RED, Color.BLUE): -0.1 ,
+            (Color.RED, Color.RED): 0
 
         }
 
@@ -36,13 +41,13 @@ class Particle:
         dy = particle.y - self.y
 
         d = sqrt(dx ** 2 + dy ** 2)
-        F = 0
-        if d != 0:
-            F = attraction * (self.mass * particle.mass) / (pow(d, 2) * pow(self.mass, 2))
-            # F = ((self.mass * particle.mass) / (d * d))
-
-        self.x_velocity += F * dx
-        self.y_velocity += F * dy
+        vx = 0
+        vy = 0
+        if 1 < d :
+            # F = attraction * (self.mass * particle.mass) / (pow(d, 2) * pow(self.mass, 2))
+            F = attraction * 1 / d
+            self.x_velocity += (F * dx)/2
+            self.y_velocity += (F * dy)/2
 
     def reverse_x_velocity(self):
         self.x_velocity /= -2
@@ -54,20 +59,27 @@ class Particle:
     def move(self):
         self.x += self.x_velocity
         self.y += self.y_velocity
+        self.x_velocity *= 0.8
+        self.y_velocity *= 0.8
 
     def __repr__(self):
         return f'Particle(x={self.x}, y={self.y}, m={self.mass})'
 
-
-particles = [Particle(x=random.randint(-400, 400),
-                      y=random.randint(-400, 400),
-                      mass=20,
-                      color=Color.GREEN) for _ in range(10)]
+particles = []
 particles += [Particle(x=random.randint(-400, 400),
                       y=random.randint(-400, 400),
-                      color=Color.RED) for _ in range(100)]
+                      mass=5,
+                      color=Color.BLUE) for _ in range(100)]
+particles += [Particle(x=random.randint(-400, 400),
+                      y=random.randint(-400, 400),
+                      mass=5,
+                      color=Color.GREEN) for _ in range(100)]
+particles += [Particle(x=random.randint(-400, 400),
+                      y=random.randint(-400, 400),
+                       mass=5,
+                      color=Color.RED) for _ in range(50)]
 
-secreen_size = (1200, 800)
+secreen_size = (1200, 1200)
 screen = pygame.display.set_mode(secreen_size)
 pygame.display.set_caption("Particles")
 

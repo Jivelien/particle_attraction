@@ -13,20 +13,21 @@ class Color(enum.Enum):
     GREEN = (0, 255, 0)
 
 law_of_attraction = {
-            (Color.BLUE, Color.BLUE): 1,
+            (Color.BLUE, Color.BLUE): 3,
             (Color.BLUE, Color.GREEN): 5,
             (Color.BLUE, Color.RED): 0.1,
-            (Color.GREEN, Color.GREEN): -0.1,
-            (Color.GREEN, Color.BLUE): 2.5,
+            (Color.GREEN, Color.GREEN): -3,
+            (Color.GREEN, Color.BLUE): 3,
             (Color.GREEN, Color.RED): 0.3,
-            (Color.RED, Color.GREEN): 0.5,
-            (Color.RED, Color.BLUE): -0.1 ,
+            (Color.RED, Color.GREEN): 2,
+            (Color.RED, Color.BLUE): -1 ,
             (Color.RED, Color.RED): 0
 
         }
 
 class Particle:
-    def __init__(self, x: float, y: float, color: Color, mass=5):
+    def __init__(self, x: float, y: float, color: Color, mass=1):
+
         self.x = x
         self.y = y
         self.x_velocity = 0
@@ -41,13 +42,13 @@ class Particle:
         dy = particle.y - self.y
 
         d = sqrt(dx ** 2 + dy ** 2)
-        vx = 0
-        vy = 0
+        F=0
         if 1 < d :
-            # F = attraction * (self.mass * particle.mass) / (pow(d, 2) * pow(self.mass, 2))
-            F = attraction * 1 / d
-            self.x_velocity += (F * dx)/2
-            self.y_velocity += (F * dy)/2
+            F = attraction * (self.mass * particle.mass) / (pow(d, 1)  * pow(self.mass, 2))
+        self.x_velocity += (F * dx)/2
+        self.y_velocity += (F * dy)/2
+
+
 
     def reverse_x_velocity(self):
         self.x_velocity /= -2
@@ -68,15 +69,15 @@ class Particle:
 particles = []
 particles += [Particle(x=random.randint(-400, 400),
                       y=random.randint(-400, 400),
-                      mass=5,
-                      color=Color.BLUE) for _ in range(100)]
+                      mass=1,
+                      color=Color.BLUE) for _ in range(50)]
 particles += [Particle(x=random.randint(-400, 400),
                       y=random.randint(-400, 400),
-                      mass=5,
-                      color=Color.GREEN) for _ in range(100)]
+                      mass=1,
+                      color=Color.GREEN) for _ in range(50)]
 particles += [Particle(x=random.randint(-400, 400),
                       y=random.randint(-400, 400),
-                       mass=5,
+                       mass=1,
                       color=Color.RED) for _ in range(50)]
 
 secreen_size = (1200, 1200)
@@ -101,24 +102,24 @@ while running:
             particle.update(other_particle)
 
     for particle in particles:
-        if particle.x + secreen_size[0] / 2 < 0:
+        if particle.dx + secreen_size[0] / 2 < 0:
             particle.reverse_x_velocity()
-            particle.x = -secreen_size[0] / 2 +1
-        if particle.x + secreen_size[0] / 2 > secreen_size[0]:
+            particle.dx = -secreen_size[0] / 2 + 1
+        if particle.dx + secreen_size[0] / 2 > secreen_size[0]:
             particle.reverse_x_velocity()
-            particle.x = secreen_size[0] / 2 -1
-        if particle.y + secreen_size[1] / 2 < 0:
+            particle.dx = secreen_size[0] / 2 - 1
+        if particle.dy + secreen_size[1] / 2 < 0:
             particle.reverse_y_velocity()
-            particle.y = -secreen_size[1] / 2 +1
-        if particle.y + secreen_size[1] / 2 > secreen_size[1]:
+            particle.dy = -secreen_size[1] / 2 + 1
+        if particle.dy + secreen_size[1] / 2 > secreen_size[1]:
             particle.reverse_y_velocity()
-            particle.y = secreen_size[1] / 2 -1
+            particle.dy = secreen_size[1] / 2 - 1
 
         particle.move()
 
         pygame.draw.circle(screen, color=particle.color.value,
-                           center=(particle.x + secreen_size[0] / 2, particle.y + secreen_size[1] / 2),
-                           radius=particle.mass)
+                           center=(particle.dx + secreen_size[0] / 2, particle.dy + secreen_size[1] / 2),
+                           radius=particle.mass*5)
 
     pygame.display.flip()
     # Rafraîchir l'écran

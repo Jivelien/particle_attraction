@@ -6,86 +6,59 @@ from math import sqrt
 
 import pygame
 
-
-class Color(enum.Enum):
-    BLUE = (0, 0, 255)
-    RED = (255, 0, 0)
-    GREEN = (0, 255, 0)
+from particle_attraction_lib.color import Color
+from particle_attraction_lib.particle import BlueParticle, Position, RedParticle, GreenParticle, Particle, Velocity
 
 law_of_attraction = {
-            (Color.BLUE, Color.BLUE): 3,
-            (Color.BLUE, Color.GREEN): 5,
-            (Color.BLUE, Color.RED): 0.1,
-            (Color.GREEN, Color.GREEN): -3,
-            (Color.GREEN, Color.BLUE): 3,
-            (Color.GREEN, Color.RED): 0.3,
-            (Color.RED, Color.GREEN): 2,
-            (Color.RED, Color.BLUE): -1 ,
-            (Color.RED, Color.RED): 0
+    (Color.BLUE, Color.BLUE): 1,
+    (Color.BLUE, Color.GREEN): 2,
+    (Color.BLUE, Color.RED): 0.1,
+    (Color.GREEN, Color.GREEN): -0.1,
+    (Color.GREEN, Color.BLUE): 1.5,
+    (Color.GREEN, Color.RED): 0.5,
+    (Color.RED, Color.GREEN): 0.5,
+    (Color.RED, Color.BLUE): -0.1,
+    (Color.RED, Color.RED): 0
 
-        }
-
-class Particle:
-    def __init__(self, x: float, y: float, color: Color, mass=1):
-
-        self.x = x
-        self.y = y
-        self.x_velocity = 0
-        self.y_velocity = 0
-        self.mass = mass
-        self.color = color
-
-    def update(self, particle: Particle):
-        attraction = law_of_attraction.get((self.color, particle.color))
-
-        dx = particle.x - self.x
-        dy = particle.y - self.y
-
-        d = sqrt(dx ** 2 + dy ** 2)
-        F=0
-        if 1 < d :
-            F = attraction * (self.mass * particle.mass) / (pow(d, 1)  * pow(self.mass, 2))
-        self.x_velocity += (F * dx)/2
-        self.y_velocity += (F * dy)/2
+}
 
 
+def update(a_particule:Particle , another_particle: Particle):
+    attraction = law_of_attraction.get((a_particule.color, another_particle.color))
 
-    def reverse_x_velocity(self):
-        self.x_velocity /= -2
+    dx = another_particle.position.x - a_particule.position.x
+    dy = another_particle.position.y - a_particule.position.y
 
+    d = sqrt(dx ** 2 + dy ** 2)
+    F = 0
+    d_rel = d/200
+    dist = 0.1
+    if d_rel == 0:
+        F = -1
+    elif d_rel <= dist:
+        F = (d_rel/dist - 1)
+    elif d_rel <= 1:
+        F = attraction * (1-(abs(2*d_rel-1-dist))/(1-dist)) / 50
+    a_particule.accelerate(Velocity((F * dx) , (F * dy)))
 
-    def reverse_y_velocity(self):
-        self.y_velocity /= -2
-
-    def move(self):
-        self.x += self.x_velocity
-        self.y += self.y_velocity
-        self.x_velocity *= 0.8
-        self.y_velocity *= 0.8
-
-    def __repr__(self):
-        return f'Particle(x={self.x}, y={self.y}, m={self.mass})'
 
 particles = []
-particles += [Particle(x=random.randint(-400, 400),
-                      y=random.randint(-400, 400),
-                      mass=1,
-                      color=Color.BLUE) for _ in range(50)]
-particles += [Particle(x=random.randint(-400, 400),
-                      y=random.randint(-400, 400),
-                      mass=1,
-                      color=Color.GREEN) for _ in range(50)]
-particles += [Particle(x=random.randint(-400, 400),
-                      y=random.randint(-400, 400),
-                       mass=1,
-                      color=Color.RED) for _ in range(50)]
+particles += [BlueParticle(Position(x=random.randint(-400, 400),
+                                    y=random.randint(-400, 400)))
+              for _ in range(25)]
+particles += [GreenParticle(Position(x=random.randint(-400, 400),
+                                     y=random.randint(-400, 400)))
+              for _ in range(25)]
+particles += [RedParticle(Position(x=random.randint(-400, 400),
+                                   y=random.randint(-400, 400)))
+              for _ in range(25)]
 
-secreen_size = (1200, 1200)
-screen = pygame.display.set_mode(secreen_size)
+screen_size = (500, 500)
+screen = pygame.display.set_mode(screen_size)
 pygame.display.set_caption("Particles")
 
 screen.fill((0, 0, 0))
-surface_transparente = pygame.Surface(secreen_size, pygame.SRCALPHA)
+surface_transparente = pygame.Surface(screen_size, pygame.SRCALPHA)
 surface_transparente.fill((0, 0, 0, 25))
 
 running = True
@@ -99,31 +72,32 @@ while running:
 
     for particle in particles:
         for other_particle in particles:
-            particle.update(other_particle)
+            update(particle, other_particle)
 
-    for particle in particles:
-        if particle.dx + secreen_size[0] / 2 < 0:
-            particle.reverse_x_velocity()
-            particle.dx = -secreen_size[0] / 2 + 1
-        if particle.dx + secreen_size[0] / 2 > secreen_size[0]:
-            particle.reverse_x_velocity()
-            particle.dx = secreen_size[0] / 2 - 1
-        if particle.dy + secreen_size[1] / 2 < 0:
-            particle.reverse_y_velocity()
-            particle.dy = -secreen_size[1] / 2 + 1
-        if particle.dy + secreen_size[1] / 2 > secreen_size[1]:
-            particle.reverse_y_velocity()
-            particle.dy = secreen_size[1] / 2 - 1
+    # for particle in particles:
+    #     if particle.position.x + screen_size[0] / 2 < 0:
+    #         particle.velocity.dx = -particle.velocity.dx
+    #         particle.position.x = -screen_size[0] / 2 + 1
+    #     if particle.position.x + screen_size[0] / 2 > screen_size[0]:
+    #         particle.velocity.dx = -particle.velocity.dx
+    #         particle.position.x = screen_size[0] / 2 - 1
+    #     if particle.position.y + screen_size[1] / 2 < 0:
+    #         particle.velocity.dy = -particle.velocity.dy
+    #         particle.position.y = -screen_size[1] / 2 + 1
+    #     if particle.position.y + screen_size[1] / 2 > screen_size[1]:
+    #         particle.velocity.dy = -particle.velocity.dy
+    #         particle.position.y = screen_size[1] / 2 - 1
 
         particle.move()
+        particle.apply_friction(0.75)
 
         pygame.draw.circle(screen, color=particle.color.value,
-                           center=(particle.dx + secreen_size[0] / 2, particle.dy + secreen_size[1] / 2),
-                           radius=particle.mass*5)
+                           center=(particle.position.x + screen_size[0] / 2, particle.position.y + screen_size[1] / 2),
+                           radius=5)
 
     pygame.display.flip()
     # Rafraîchir l'écran
     pygame.display.flip()
-    clock.tick(60)
+    clock.tick(30)
 
 pygame.quit()

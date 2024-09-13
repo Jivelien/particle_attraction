@@ -3,6 +3,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from math import sqrt
 
+from particle_attraction_lib.color import Color
+
 
 @dataclass
 class Position:
@@ -34,6 +36,7 @@ class Particle:
     def __init__(self, position: Position) -> None:
         self.position = position
         self.velocity = Velocity(dx=0, dy=0)
+        self.color = None
 
     def distance_from(self, other_particle: Particle) -> float:
         other_position = other_particle.position
@@ -48,3 +51,18 @@ class Particle:
 
     def apply_friction(self, factor: float) -> None:
         self.velocity *= factor
+
+class BlueParticle(Particle):
+    def __init__(self, position: Position) -> None:
+        super().__init__(position)
+        self.color = Color.BLUE
+
+class RedParticle(Particle):
+    def __init__(self, position: Position) -> None:
+        super().__init__(position)
+        self.color = Color.RED
+
+class GreenParticle(Particle):
+    def __init__(self, position: Position) -> None:
+        super().__init__(position)
+        self.color = Color.GREEN

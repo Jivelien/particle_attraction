@@ -4,7 +4,8 @@ from abc import ABC, abstractmethod
 from math import sqrt, copysign
 from typing import Tuple
 
-from particle_attraction_lib.particle import Vector, Position
+from particle_attraction_lib.particle import Position
+from particle_attraction_lib.vector import Vector
 
 
 class DistanceInterface(ABC):

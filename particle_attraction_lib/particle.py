@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from math import sqrt
 
 from particle_attraction_lib.color import Color
+from particle_attraction_lib.vector import Vector
 
 
 @dataclass
@@ -16,20 +17,6 @@ class Position:
         dy = self.y - other.y
 
         return sqrt(dx ** 2 + dy ** 2)
-
-
-@dataclass
-class Vector:
-    dx: float
-    dy: float
-
-    def __add__(self, other: Vector) -> Vector:
-        return Vector(self.dx + other.dx,
-                      self.dy + other.dy)
-
-    def __mul__(self, factor: float) -> Vector:
-        return Vector(self.dx * factor,
-                      self.dy * factor)
 
 
 class Particle:

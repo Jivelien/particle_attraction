@@ -3,7 +3,8 @@ from __future__ import annotations
 import unittest
 
 from particle_attraction_lib.distance import Distance, TorusDistance
-from particle_attraction_lib.particle import Position, Vector
+from particle_attraction_lib.particle import Position
+from particle_attraction_lib.vector import Vector
 
 
 class TestDistance(unittest.TestCase):

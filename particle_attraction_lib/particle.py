@@ -19,27 +19,27 @@ class Position:
 
 
 @dataclass
-class Velocity:
+class Vector:
     dx: float
     dy: float
 
-    def __add__(self, other: Velocity) -> Velocity:
-        return Velocity(self.dx + other.dx,
-                        self.dy + other.dy)
+    def __add__(self, other: Vector) -> Vector:
+        return Vector(self.dx + other.dx,
+                      self.dy + other.dy)
 
-    def __mul__(self, factor: float) -> Velocity:
-        return Velocity(self.dx * factor,
-                        self.dy * factor)
+    def __mul__(self, factor: float) -> Vector:
+        return Vector(self.dx * factor,
+                      self.dy * factor)
 
 
 class Particle:
     def __init__(self, position: Position) -> None:
         self.position = position
-        self.velocity = Velocity(dx=0, dy=0)
+        self.velocity = Vector(dx=0, dy=0)
         self.color = None
 
 
-    def accelerate(self, velocity: Velocity) -> None:
+    def accelerate(self, velocity: Vector) -> None:
         self.velocity += velocity
 
     def move(self) -> None:

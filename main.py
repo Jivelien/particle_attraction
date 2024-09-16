@@ -7,7 +7,7 @@ from math import sqrt
 import pygame
 
 from particle_attraction_lib.color import Color
-from particle_attraction_lib.particle import BlueParticle, Position, RedParticle, GreenParticle, Particle, Velocity
+from particle_attraction_lib.particle import BlueParticle, Position, RedParticle, GreenParticle, Particle, Vector
 
 law_of_attraction = {
     (Color.BLUE, Color.BLUE): 1,
@@ -39,7 +39,7 @@ def update(a_particule:Particle , another_particle: Particle):
         F = (d_rel/dist - 1)
     elif d_rel <= 1:
         F = attraction * (1-(abs(2*d_rel-1-dist))/(1-dist)) / 50
-    a_particule.accelerate(Velocity((F * dx) , (F * dy)))
+    a_particule.accelerate(Vector((F * dx), (F * dy)))
 
 
 particles = []

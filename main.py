@@ -7,6 +7,7 @@ from math import sqrt
 import pygame
 
 from particle_attraction_lib.color import Color
+from particle_attraction_lib.distance import Distance
 from particle_attraction_lib.particle import BlueParticle, Position, RedParticle, GreenParticle, Particle, Vector
 
 law_of_attraction = {
@@ -26,10 +27,13 @@ law_of_attraction = {
 def update(a_particule:Particle , another_particle: Particle):
     attraction = law_of_attraction.get((a_particule.color, another_particle.color))
 
-    dx = another_particle.position.x - a_particule.position.x
-    dy = another_particle.position.y - a_particule.position.y
+    distance = Distance()
+    dx = distance.between_x(a_particule.position, another_particle.position)
+    dy = distance.between_y(a_particule.position, another_particle.position)
 
-    d = sqrt(dx ** 2 + dy ** 2)
+    d = distance.between(a_particule.position, another_particle.position)
+    vector = distance.vector_between(a_particule.position, another_particle.position)
+
     F = 0
     d_rel = d/200
     dist = 0.1
@@ -39,7 +43,7 @@ def update(a_particule:Particle , another_particle: Particle):
         F = (d_rel/dist - 1)
     elif d_rel <= 1:
         F = attraction * (1-(abs(2*d_rel-1-dist))/(1-dist)) / 50
-    a_particule.accelerate(Vector((F * dx), (F * dy)))
+    a_particule.accelerate(vector * F)
 
 
 particles = []

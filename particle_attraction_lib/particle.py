@@ -38,9 +38,6 @@ class Particle:
         self.velocity = Velocity(dx=0, dy=0)
         self.color = None
 
-    def distance_from(self, other_particle: Particle) -> float:
-        other_position = other_particle.position
-        return self.position.distance_from(other_position)
 
     def accelerate(self, velocity: Velocity) -> None:
         self.velocity += velocity

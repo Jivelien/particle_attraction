@@ -74,19 +74,19 @@ while running:
         for other_particle in particles:
             update(particle, other_particle)
 
-    # for particle in particles:
-    #     if particle.position.x + screen_size[0] / 2 < 0:
-    #         particle.velocity.dx = -particle.velocity.dx
-    #         particle.position.x = -screen_size[0] / 2 + 1
-    #     if particle.position.x + screen_size[0] / 2 > screen_size[0]:
-    #         particle.velocity.dx = -particle.velocity.dx
-    #         particle.position.x = screen_size[0] / 2 - 1
-    #     if particle.position.y + screen_size[1] / 2 < 0:
-    #         particle.velocity.dy = -particle.velocity.dy
-    #         particle.position.y = -screen_size[1] / 2 + 1
-    #     if particle.position.y + screen_size[1] / 2 > screen_size[1]:
-    #         particle.velocity.dy = -particle.velocity.dy
-    #         particle.position.y = screen_size[1] / 2 - 1
+    for particle in particles:
+        if particle.position.x + screen_size[0] / 2 < 0:
+            particle.velocity.dx = -particle.velocity.dx
+            particle.position.x = -screen_size[0] / 2 + 1
+        if particle.position.x + screen_size[0] / 2 > screen_size[0]:
+            particle.velocity.dx = -particle.velocity.dx
+            particle.position.x = screen_size[0] / 2 - 1
+        if particle.position.y + screen_size[1] / 2 < 0:
+            particle.velocity.dy = -particle.velocity.dy
+            particle.position.y = -screen_size[1] / 2 + 1
+        if particle.position.y + screen_size[1] / 2 > screen_size[1]:
+            particle.velocity.dy = -particle.velocity.dy
+            particle.position.y = screen_size[1] / 2 - 1
 
         particle.move()
         particle.apply_friction(0.75)

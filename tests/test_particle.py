@@ -13,7 +13,7 @@ class TestParticle(unittest.TestCase):
         p1.move()
 
         distance = Distance()
-        sut2 = distance.between(p1, Particle(position=Position(0, 0)))
+        sut2 = distance.between(p1.position, Position(0, 0))
 
         self.assertEqual(10., sut2)
 
@@ -24,7 +24,7 @@ class TestParticle(unittest.TestCase):
         p1.move()
 
         distance = Distance()
-        sut2 = distance.between(p1, Particle(position=Position(0, 0)))
+        sut2 = distance.between(p1.position, Position(0, 0))
 
         self.assertEqual(15., sut2)
 
@@ -35,6 +35,6 @@ class TestParticle(unittest.TestCase):
         p1.move()
 
         distance = Distance()
-        sut2 = distance.between(p1, Particle(position=Position(0, 0)))
+        sut2 = distance.between(p1.position, Position(0, 0))
 
         self.assertEqual(10., sut2)

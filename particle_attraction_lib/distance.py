@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import functools
 from abc import ABC, abstractmethod
 from math import sqrt, copysign
 from typing import Tuple

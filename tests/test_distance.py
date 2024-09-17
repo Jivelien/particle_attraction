@@ -41,7 +41,7 @@ class TestTorusDistance(unittest.TestCase):
         p1 = Position(0, 0)
         p2 = Position(100, 50)
 
-        distance = TorusDistance(board_size=(500, 500))
+        distance = TorusDistance(board=(500, 500))
         sut = distance.vector_between(p1, p2)
 
         self.assertEqual(Vector(dx=100,dy=50), sut)
@@ -50,7 +50,7 @@ class TestTorusDistance(unittest.TestCase):
         p1 = Position(450, 0)
         p2 = Position(50, 50)
 
-        distance = TorusDistance(board_size=(500, 500))
+        distance = TorusDistance(board=(500, 500))
         sut = distance.vector_between(p1, p2)
 
         self.assertEqual(Vector(dx=100,dy=50), sut)
@@ -59,7 +59,7 @@ class TestTorusDistance(unittest.TestCase):
         p1 = Position(100, 0)
         p2 = Position(400, 50)
 
-        distance = TorusDistance(board_size=(500, 500))
+        distance = TorusDistance(board=(500, 500))
         sut = distance.vector_between(p1, p2)
 
         self.assertEqual(Vector(dx=-200,dy=50), sut)
@@ -68,7 +68,7 @@ class TestTorusDistance(unittest.TestCase):
         p1 = Position(400, 0)
         p2 = Position(200, 500)
 
-        distance = TorusDistance(board_size=(500, 500))
+        distance = TorusDistance(board=(500, 500))
         sut = distance.between(p1, p2)
 
         self.assertEqual(200., sut)

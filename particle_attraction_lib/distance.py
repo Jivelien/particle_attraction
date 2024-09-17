@@ -5,6 +5,7 @@ from abc import ABC, abstractmethod
 from math import sqrt, copysign
 from typing import Tuple
 
+from particle_attraction_lib.board import Board
 from particle_attraction_lib.particle import Position
 from particle_attraction_lib.vector import Vector
 
@@ -35,8 +36,8 @@ class Distance(DistanceInterface):
 
 
 class TorusDistance(DistanceInterface):
-    def __init__(self, board_size: Tuple[int, int]):
-        self._width, self._height = board_size
+    def __init__(self, board: Board):
+        self._width, self._height = board
 
     def between(self, p1: Position, p2: Position) -> float:
         dx = self._between_x(p1, p2)

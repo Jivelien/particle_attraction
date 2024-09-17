@@ -4,6 +4,7 @@ import random
 
 import pygame
 
+from particle_attraction_lib.board import Board
 from particle_attraction_lib.color import Color
 from particle_attraction_lib.distance import TorusDistance
 from particle_attraction_lib.particle import BlueParticle, Position, RedParticle, GreenParticle, Particle
@@ -20,11 +21,12 @@ law_of_attraction = {
     (Color.RED, Color.RED): -0.3
 
 }
-
-distance = TorusDistance((500, 500))
+board = Board(500, 500)
+screen_size = tuple(board)
+distance = TorusDistance(board)
 
 def update(a_particule: Particle, another_particle: Particle, distance):
-    attraction = law_of_attraction.get((a_particule.color, another_particle.color))
+    attraction = law_of_attraction.get((a_particule.color, another_particle.color),0)
 
     # distance = Distance()
     vector = distance.vector_between(a_particule.position, another_particle.position)
@@ -56,7 +58,7 @@ particles += [RedParticle(Position(x=random.randint(-400, 400),
                                    y=random.randint(-400, 400)))
               for _ in range(20)]
 
-screen_size = (500, 500)
+
 screen = pygame.display.set_mode(screen_size)
 pygame.display.set_caption("Particles")
 

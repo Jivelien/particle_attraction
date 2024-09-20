@@ -32,10 +32,10 @@ def update(a_particule: Particle, another_particle: Particle, distance):
     vector = distance.vector_between(a_particule.position, another_particle.position)
     d = distance.between(a_particule.position, another_particle.position)
 
-    reduc = 50
+    reduc = 10
     F = 0
-    d_rel = d / 160
-    dist = 0.15
+    d_rel = d / 50
+    dist = 0.30
     if d_rel == 0:
         F = -reduc
     elif d_rel <= dist:
@@ -50,13 +50,13 @@ def update(a_particule: Particle, another_particle: Particle, distance):
 particles = []
 particles += [BlueParticle(Position(x=random.randint(-400, 400),
                                     y=random.randint(-400, 400)))
-              for _ in range(20)]
+              for _ in range(30)]
 particles += [GreenParticle(Position(x=random.randint(-400, 400),
                                      y=random.randint(-400, 400)))
-              for _ in range(20)]
+              for _ in range(30)]
 particles += [RedParticle(Position(x=random.randint(-400, 400),
                                    y=random.randint(-400, 400)))
-              for _ in range(20)]
+              for _ in range(30)]
 
 
 screen = pygame.display.set_mode(screen_size)
@@ -84,7 +84,7 @@ while running:
         particle.position.y = particle.position.y % 500
 
         particle.move()
-        particle.apply_friction(0.25)
+        particle.apply_friction(0.8)
 
         pygame.draw.circle(screen, color=particle.color.value,
                            center=(particle.position.x, particle.position.y),
@@ -93,6 +93,6 @@ while running:
     pygame.display.flip()
     # Rafraîchir l'écran
     pygame.display.flip()
-    clock.tick(30)
+    clock.tick(60)
 
 pygame.quit()

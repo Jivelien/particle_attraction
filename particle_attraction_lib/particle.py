@@ -25,7 +25,6 @@ class Particle:
         self.velocity = Vector(dx=0, dy=0)
         self.color = None
 
-
     def accelerate(self, velocity: Vector) -> None:
         self.velocity += velocity
 
@@ -36,15 +35,18 @@ class Particle:
     def apply_friction(self, factor: float) -> None:
         self.velocity *= factor
 
+
 class BlueParticle(Particle):
     def __init__(self, position: Position) -> None:
         super().__init__(position)
         self.color = Color.BLUE
 
+
 class RedParticle(Particle):
     def __init__(self, position: Position) -> None:
         super().__init__(position)
         self.color = Color.RED
+
 
 class GreenParticle(Particle):
     def __init__(self, position: Position) -> None:

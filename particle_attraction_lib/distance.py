@@ -58,6 +58,6 @@ class TorusDistance(DistanceInterface):
     def _between_value(self, p1: float, p2: float, length: float) -> float:
         d = p2 - p1
         if abs(d) > length / 2:
-            d -= length * copysign(1, d)
+            d -= length if d > 0 else -length
         return d
 

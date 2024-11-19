@@ -1,2 +1,4 @@
-python -m cProfile -o particles.prof only_particles.py
+FILENAME=$1
+
+python -m cProfile -o particles.prof $FILENAME
 snakeviz particles.prof

@@ -32,6 +32,7 @@ def update(a_particle: Particle,
            distance: DistanceInterface):
     F = attraction_force.attraction_between(a_particle=a_particle, another_particle=another_particle)
 
+    # Vector should be compute only one time
     vector = distance.vector_between(a_particle.position, another_particle.position)
 
     force_vector = vector * F * (1 / attraction_parameters.force_factor)

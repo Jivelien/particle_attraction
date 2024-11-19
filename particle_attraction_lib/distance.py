@@ -1,9 +1,7 @@
 from __future__ import annotations
 
-import functools
 from abc import ABC, abstractmethod
-from math import sqrt, copysign
-from typing import Tuple
+from math import sqrt
 
 from particle_attraction_lib.board import Board
 from particle_attraction_lib.particle import Position
@@ -19,14 +17,22 @@ class DistanceInterface(ABC):
     def vector_between(self, p1: Position, p2: Position) -> Vector:
         raise NotImplementedError
 
+    @abstractmethod
+    def distance_of_vector(self, vector):
+        pass
+
 
 class Distance(DistanceInterface):
     def between(self, p1: Position, p2: Position) -> float:
-        return p1.distance_from(p2)
+        vector = self.vector_between(p1, p2)
+        return self.distance_of_vector(vector=vector)
 
     def vector_between(self, p1: Position, p2: Position) -> Vector:
         return Vector(dx=self._between_x(p1, p2),
                       dy=self._between_y(p1, p2))
+
+    def distance_of_vector(self, vector: Vector):
+        return sqrt(vector.dx ** 2 + vector.dy ** 2)
 
     def _between_x(self, p1: Position, p2: Position) -> float:
         return p2.x - p1.x
@@ -40,14 +46,15 @@ class TorusDistance(DistanceInterface):
         self._width, self._height = board
 
     def between(self, p1: Position, p2: Position) -> float:
-        dx = self._between_x(p1, p2)
-        dy = self._between_y(p1, p2)
+        vector = self.vector_between(p1, p2)
+        return self.distance_of_vector(vector=vector)
 
-        return sqrt(dx ** 2 + dy ** 2)
+    def distance_of_vector(self, vector: Vector):
+        return sqrt(vector.dx ** 2 + vector.dy ** 2)
 
     def vector_between(self, p1: Position, p2: Position) -> Vector:
-        return Vector(dx=self._between_x(p1,p2),
-                      dy=self._between_y(p1,p2))
+        return Vector(dx=self._between_x(p1, p2),
+                      dy=self._between_y(p1, p2))
 
     def _between_x(self, p1: Position, p2: Position) -> float:
         return self._between_value(p1.x, p2.x, length=self._width)
@@ -60,4 +67,3 @@ class TorusDistance(DistanceInterface):
         if abs(d) > length / 2:
             d -= length if d > 0 else -length
         return d
-

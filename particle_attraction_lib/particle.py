@@ -12,18 +12,12 @@ class Position:
     x: float
     y: float
 
-    def distance_from(self, other: Position) -> float:
-        dx = self.x - other.x
-        dy = self.y - other.y
-
-        return sqrt(dx ** 2 + dy ** 2)
-
 
 class Particle:
-    def __init__(self, position: Position) -> None:
+    def __init__(self, position: Position, species:int = None) -> None:
         self.position = position
         self.velocity = Vector(dx=0, dy=0)
-        self.color = None
+        self.species = species
 
     def accelerate(self, velocity: Vector) -> None:
         self.velocity += velocity

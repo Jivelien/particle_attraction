@@ -1,9 +1,6 @@
 import unittest
 
 from particle_attraction_lib.attraction_force import AttractionParameters, AttractionForce
-from particle_attraction_lib.attraction_law import AttractionLawInterface
-from particle_attraction_lib.distance import Distance
-from particle_attraction_lib.particle import Particle, Position
 from particle_attraction_lib.vector import Vector
 
 
@@ -42,7 +39,6 @@ class TestForce(unittest.TestCase):
         self.assertLess(sut, 0)
         self.assertEqual(sut, -1)
 
-    @unittest.skip("")
     def test_when_two_particles_are_on_medium_range_there_is_attraction(self):
         f = AttractionForce(attraction_parameters=AttractionParameters(size_of_attraction=100,
                                                                        absolute_repulsion=20))

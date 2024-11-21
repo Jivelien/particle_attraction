@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from math import sqrt
 
 
 @dataclass
@@ -15,3 +16,7 @@ class Vector:
     def __mul__(self, factor: float) -> Vector:
         return Vector(self.dx * factor,
                       self.dy * factor)
+
+    @property
+    def length(self):
+        return sqrt(self.dx ** 2 + self.dy ** 2)

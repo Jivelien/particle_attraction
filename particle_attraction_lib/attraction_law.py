@@ -1,8 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import Dict, Tuple
 
-from particle_attraction_lib.particle import Particle
-
 
 class AttractionLawInterface(ABC):
     @abstractmethod

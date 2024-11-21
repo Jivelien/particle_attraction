@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from math import sqrt
 
 from particle_attraction_lib.color import Color
 from particle_attraction_lib.vector import Vector
@@ -14,7 +13,7 @@ class Position:
 
 
 class Particle:
-    def __init__(self, position: Position, species:int = None) -> None:
+    def __init__(self, position: Position, species: int = None) -> None:
         self.position = position
         self.velocity = Vector(dx=0, dy=0)
         self.species = species

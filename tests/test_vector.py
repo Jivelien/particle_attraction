@@ -13,8 +13,14 @@ class TestVector(unittest.TestCase):
         sut = v1 + v2
         self.assertEqual(Vector(1, 1), sut)
 
-    def test_vectory_can_be_multiply_per_a_factor(self):
+    def test_vector_can_be_multiply_per_a_factor(self):
         v1 = Vector(dx=1, dy=1)
         sut = v1 * 2
 
         self.assertEqual(Vector(2, 2), sut)
+
+    def test_vector_lenght_is_a_property(self):
+        v1 = Vector(dx=3, dy=4)
+        sut = v1.length
+
+        self.assertEqual(5, sut)

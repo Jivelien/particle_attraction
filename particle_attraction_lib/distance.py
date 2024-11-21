@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from math import sqrt
 
 from particle_attraction_lib.board import Board
 from particle_attraction_lib.particle import Position
@@ -17,22 +16,15 @@ class DistanceInterface(ABC):
     def vector_between(self, p1: Position, p2: Position) -> Vector:
         raise NotImplementedError
 
-    @abstractmethod
-    def distance_of_vector(self, vector):
-        pass
-
 
 class Distance(DistanceInterface):
     def between(self, p1: Position, p2: Position) -> float:
         vector = self.vector_between(p1, p2)
-        return self.distance_of_vector(vector=vector)
+        return vector.length
 
     def vector_between(self, p1: Position, p2: Position) -> Vector:
         return Vector(dx=self._between_x(p1, p2),
                       dy=self._between_y(p1, p2))
-
-    def distance_of_vector(self, vector: Vector):
-        return sqrt(vector.dx ** 2 + vector.dy ** 2)
 
     def _between_x(self, p1: Position, p2: Position) -> float:
         return p2.x - p1.x
@@ -47,10 +39,7 @@ class TorusDistance(DistanceInterface):
 
     def between(self, p1: Position, p2: Position) -> float:
         vector = self.vector_between(p1, p2)
-        return self.distance_of_vector(vector=vector)
-
-    def distance_of_vector(self, vector: Vector):
-        return sqrt(vector.dx ** 2 + vector.dy ** 2)
+        return vector.length
 
     def vector_between(self, p1: Position, p2: Position) -> Vector:
         return Vector(dx=self._between_x(p1, p2),

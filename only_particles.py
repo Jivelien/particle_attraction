@@ -4,10 +4,10 @@ import random
 from typing import List
 
 from particle_attraction_lib.attraction_force import AttractionParameters, AttractionForce
+from particle_attraction_lib.attraction_law import AttractionLaw
 from particle_attraction_lib.board import Board
 from particle_attraction_lib.distance import TorusDistance, DistanceInterface
 from particle_attraction_lib.particle import BlueParticle, Position, RedParticle, GreenParticle, Particle
-from particle_attraction_lib.attraction_law import AttractionLaw
 
 attraction_law = AttractionLaw()
 attraction_law.add(0, 0, 0)

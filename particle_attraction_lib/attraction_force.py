@@ -24,11 +24,11 @@ class AttractionForce:
 
         if distance_between_particles <= self.attraction_parameters.absolute_repulsion:
             F = distance_between_particles / self.attraction_parameters.absolute_repulsion - 1
-            return F * (1 / self.attraction_parameters.force_factor)
+            return F
 
         relative_distance = distance_between_particles / self.attraction_parameters.size_of_attraction
         relative_repulsion = self.attraction_parameters.absolute_repulsion / self.attraction_parameters.size_of_attraction
 
         force_ratio = 1 - (abs(2 * relative_distance - 1 - relative_repulsion)) / (1 - relative_repulsion)
 
-        return self.attraction_law.between(a_species=a_species, another_species=another_species) * force_ratio
+        return self.attraction_law.between(a_species=a_species, another_species=another_species) * force_ratio * (1 / self.attraction_parameters.force_factor)

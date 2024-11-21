@@ -32,12 +32,9 @@ def update(a_particle: Particle,
            attraction_force: AttractionForce,
            distance: DistanceInterface):
     vector = distance.vector_between(a_particle.position, another_particle.position)
-
     F = attraction_force.attraction_between(vector=vector, a_species=a_particle.species,
                                             another_species=another_particle.species)
-
-    force_vector = vector * F * (1 / attraction_parameters.force_factor)
-    a_particle.accelerate(force_vector)
+    a_particle.accelerate(vector * F)
 
 
 def particles_tick(particles: List[Particle], board, attraction_force, distance):
@@ -72,8 +69,10 @@ def main():
 
     running = True
 
-    iter = 500
+    iter = 100
     times = []
+    delta_time = 0
+    mean_time = 0
     for i in range(iter):
         time_before = time.time() * 1000
         particles_tick(particles, board, attraction_force, distance)
@@ -83,6 +82,8 @@ def main():
         times.append(delta_time)
         mean_time = sum(times)/len(times)
         print(f"iteration : {i} - time : {round(delta_time,3)} ms - average : {round(mean_time,3)} ms - maximum frequency : {1000/mean_time} Hz", end="\r")
+    print("")
+    print(f"Average time : {round(mean_time,3)} ms - maximum frequency : {1000/mean_time} Hz")
 
 
 if __name__ == '__main__':

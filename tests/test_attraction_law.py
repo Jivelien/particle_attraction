@@ -1,18 +1,6 @@
 import unittest
-from typing import Tuple, Dict
 
-from particle_attraction_lib.attraction_law import AttractionLawInterface
-
-
-class AttractionLaw(AttractionLawInterface):
-    def __init__(self):
-        self.laws: Dict[Tuple[int, int], float] = {}
-
-    def between(self, a_species: int, another_species: int):
-        return self.laws.get((a_species, another_species), 0)
-
-    def add(self, a_species: int, another_species: int, attraction: float):
-        self.laws[a_species, another_species] = attraction
+from particle_attraction_lib.attraction_law import AttractionLaw
 
 
 class TestAttractionLaw(unittest.TestCase):

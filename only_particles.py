@@ -7,7 +7,7 @@ from particle_attraction_lib.attraction_force import AttractionParameters, Attra
 from particle_attraction_lib.board import Board
 from particle_attraction_lib.distance import TorusDistance, DistanceInterface
 from particle_attraction_lib.particle import BlueParticle, Position, RedParticle, GreenParticle, Particle
-from tests.test_attraction_law import AttractionLaw
+from particle_attraction_lib.attraction_law import AttractionLaw
 
 attraction_law = AttractionLaw()
 attraction_law.add(0, 0, 0)
@@ -29,20 +29,20 @@ attraction_parameters = AttractionParameters(
 def update(a_particle: Particle,
            another_particle: Particle,
            attraction_force: AttractionForce,
+           attraction_law: AttractionLaw,
            distance: DistanceInterface):
-    F = attraction_force.attraction_between(a_particle=a_particle, another_particle=another_particle)
-
-    # Vector should be compute only one time
     vector = distance.vector_between(a_particle.position, another_particle.position)
+    attraction = attraction_law.between(a_particle.species, another_particle.species)
+    F = attraction_force.attraction_between(vector=vector, attraction=attraction)
 
     force_vector = vector * F * (1 / attraction_parameters.force_factor)
     a_particle.accelerate(force_vector)
 
 
-def particles_tick(particles: List[Particle], board, attraction_force, distance):
+def particles_tick(particles: List[Particle], board, attraction_force, attraction_law, distance):
     for particle in particles:
         for other_particle in particles:
-            update(particle, other_particle, attraction_force, distance)
+            update(particle, other_particle, attraction_force, attraction_law, distance)
 
     for particle in particles:
         particle.move()
@@ -56,9 +56,8 @@ def main():
     screen_size = tuple(board)
     distance = TorusDistance(board)
 
-    attraction_force = AttractionForce(attraction_parameters=attraction_parameters,
-                                       attraction_law=attraction_law,
-                                       distance=distance)
+    attraction_force = AttractionForce(attraction_parameters=attraction_parameters)
+
     particles = []
     particles += [BlueParticle(Position(x=random.randint(-int(board.width / 2), int(board.width / 2)),
                                         y=random.randint(-int(board.height / 2), int(board.height / 2)))) for _ in
@@ -73,7 +72,7 @@ def main():
     running = True
 
     for i in range(100):
-        particles_tick(particles, board, attraction_force, distance)
+        particles_tick(particles, board, attraction_force, attraction_law, distance)
 
 
 if __name__ == '__main__':

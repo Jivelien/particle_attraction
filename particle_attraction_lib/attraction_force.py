@@ -1,8 +1,9 @@
 from dataclasses import dataclass
 
-from particle_attraction_lib.distance import DistanceInterface
+from particle_attraction_lib.distance import DistanceInterface, Distance
 from particle_attraction_lib.particle import Particle
 from particle_attraction_lib.attraction_law import AttractionLawInterface
+from particle_attraction_lib.vector import Vector
 
 
 @dataclass
@@ -13,23 +14,18 @@ class AttractionParameters:
 
 
 class AttractionForce:
-    def __init__(self, attraction_parameters: AttractionParameters, attraction_law: AttractionLawInterface,
-                 distance: DistanceInterface):
-        self.attraction_law = attraction_law
-        self.distance = distance
+    def __init__(self, attraction_parameters: AttractionParameters):
         self.attraction_parameters = attraction_parameters
 
-    def attraction_between(self, a_particle: Particle, another_particle: Particle):
-        vector = self.distance.vector_between(a_particle.position, another_particle.position)
-        distance_between_particles = self.distance.distance_of_vector(vector)
+    def attraction_between(self, vector: Vector, attraction: float):
+        distance=Distance()
+        distance_between_particles = distance.distance_of_vector(vector)
 
         if distance_between_particles > self.attraction_parameters.size_of_attraction:
             return 0
 
         if distance_between_particles <= self.attraction_parameters.absolute_repulsion:
             return (distance_between_particles / self.attraction_parameters.absolute_repulsion - 1) # * self.attraction_parameters.force_factor
-
-        attraction = self.attraction_law.between(a_species=a_particle.species, another_species=another_particle.species)
 
         relative_distance = distance_between_particles / self.attraction_parameters.size_of_attraction
         relative_repulsion = self.attraction_parameters.absolute_repulsion / self.attraction_parameters.size_of_attraction

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import random
+import time
 from typing import List
 
 from particle_attraction_lib.attraction_force import AttractionParameters, AttractionForce
@@ -29,20 +30,20 @@ attraction_parameters = AttractionParameters(
 def update(a_particle: Particle,
            another_particle: Particle,
            attraction_force: AttractionForce,
-           attraction_law: AttractionLaw,
            distance: DistanceInterface):
     vector = distance.vector_between(a_particle.position, another_particle.position)
-    attraction = attraction_law.between(a_particle.species, another_particle.species)
-    F = attraction_force.attraction_between(vector=vector, attraction=attraction)
+
+    F = attraction_force.attraction_between(vector=vector, a_species=a_particle.species,
+                                            another_species=another_particle.species)
 
     force_vector = vector * F * (1 / attraction_parameters.force_factor)
     a_particle.accelerate(force_vector)
 
 
-def particles_tick(particles: List[Particle], board, attraction_force, attraction_law, distance):
+def particles_tick(particles: List[Particle], board, attraction_force, distance):
     for particle in particles:
         for other_particle in particles:
-            update(particle, other_particle, attraction_force, attraction_law, distance)
+            update(particle, other_particle, attraction_force, distance)
 
     for particle in particles:
         particle.move()
@@ -56,7 +57,7 @@ def main():
     screen_size = tuple(board)
     distance = TorusDistance(board)
 
-    attraction_force = AttractionForce(attraction_parameters=attraction_parameters)
+    attraction_force = AttractionForce(attraction_parameters=attraction_parameters, attraction_law=attraction_law)
 
     particles = []
     particles += [BlueParticle(Position(x=random.randint(-int(board.width / 2), int(board.width / 2)),
@@ -71,8 +72,17 @@ def main():
 
     running = True
 
-    for i in range(100):
-        particles_tick(particles, board, attraction_force, attraction_law, distance)
+    iter = 500
+    times = []
+    for i in range(iter):
+        time_before = time.time() * 1000
+        particles_tick(particles, board, attraction_force, distance)
+        time_after = time.time() * 1000
+
+        delta_time = time_after - time_before
+        times.append(delta_time)
+        mean_time = sum(times)/len(times)
+        print(f"iteration : {i} - time : {round(delta_time,3)} ms - average : {round(mean_time,3)} ms - maximum frequency : {1000/mean_time} Hz", end="\r")
 
 
 if __name__ == '__main__':

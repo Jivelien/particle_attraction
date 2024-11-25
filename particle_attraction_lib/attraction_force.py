@@ -32,4 +32,5 @@ class AttractionForce:
 
         force_ratio = 1 - (abs(2 * relative_distance - 1 - relative_repulsion)) / (1 - relative_repulsion)
 
-        return self.attraction_law.between(a_species=a_species, another_species=another_species) * force_ratio * (1 / self.attraction_parameters.force_factor)
+        return self.attraction_law.between(a_species=a_species, another_species=another_species) * force_ratio * (
+                    1 / self.attraction_parameters.force_factor)

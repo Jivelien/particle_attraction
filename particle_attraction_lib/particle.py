@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from particle_attraction_lib.color import Color
 from particle_attraction_lib.vector import Vector
 
 

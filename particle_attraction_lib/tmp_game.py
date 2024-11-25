@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import random
-from typing import List
 
 from particle_attraction_lib.attraction_force import AttractionForce, AttractionParameters
 from particle_attraction_lib.attraction_law import AttractionLaw
@@ -12,7 +11,8 @@ from particle_attraction_lib.particle_repository import ParticleRepository
 
 
 class TemporaryGame:
-    def __init__(self, distance: DistanceInterface, attraction_force: AttractionForce, board: Board, particle_repository: ParticleRepository):
+    def __init__(self, distance: DistanceInterface, attraction_force: AttractionForce, board: Board,
+                 particle_repository: ParticleRepository):
         self.distance = distance
         self.attraction_force = attraction_force
         self.board = board
@@ -40,7 +40,7 @@ class TemporaryGame:
         return self.particle_repository.all()
 
 
-def init_game(board: Board):
+def configure_attraction_law():
     attraction_law = AttractionLaw()
     attraction_law.add(0, 0, 0)
     attraction_law.add(0, 1, -0.6)
@@ -51,17 +51,30 @@ def init_game(board: Board):
     attraction_law.add(2, 0, 0.4)
     attraction_law.add(2, 1, 0.2)
     attraction_law.add(2, 2, 0)
+    return attraction_law
+
+
+def init_game(board: Board):
+    attraction_law = configure_attraction_law()
     attraction_parameters = AttractionParameters(
         size_of_attraction=75,
         absolute_repulsion=5,
         force_factor=200)
-    distance = TorusDistance(board)
     attraction_force = AttractionForce(attraction_parameters=attraction_parameters, attraction_law=attraction_law)
+
+    distance = TorusDistance(board)
+
+    particles = create_particles(board)
+
+    game = TemporaryGame(distance=distance, attraction_force=attraction_force, board=board,
+                         particle_repository=particles)
+    return game
+
+
+def create_particles(board):
     particles = ParticleRepository()
     particles.add_multiple([Particle(position=Position(x=random.randint(-int(board.width / 2), int(board.width / 2)),
                                                        y=random.randint(-int(board.height / 2), int(board.height / 2))),
                                      species=random.randint(0, 2)) for _ in
                             range(180)])
-
-    game = TemporaryGame(distance=distance, attraction_force=attraction_force, board=board, particle_repository=particles)
-    return game
+    return particles

@@ -12,7 +12,9 @@ def main():
     screen_size = (1200, 1200)
     gui = PygameGui(screen_size)
 
-    while gui.draw(game):
+    running = True
+    while running:
+        running = gui.draw(game)
         game.particles_tick()
 
 

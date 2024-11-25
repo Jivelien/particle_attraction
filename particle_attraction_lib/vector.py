@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import functools
 from dataclasses import dataclass
 from math import sqrt
 

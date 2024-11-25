@@ -14,7 +14,6 @@ dist/
 downloads/
 eggs/
 .eggs/
-particle_attraction_lib/
 lib64/
 parts/
 sdist/

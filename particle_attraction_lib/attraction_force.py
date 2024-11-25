@@ -18,6 +18,7 @@ class AttractionForce:
 
     def attraction_between(self, vector: Vector, a_species: int, another_species: int):
         distance_between_particles = vector.length
+        # print(f"{vector}: {distance_between_particles}")
 
         if distance_between_particles > self.attraction_parameters.size_of_attraction:
             return 0

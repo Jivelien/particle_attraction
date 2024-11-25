@@ -32,16 +32,16 @@ class Particle:
 class BlueParticle(Particle):
     def __init__(self, position: Position) -> None:
         super().__init__(position)
-        self.color = Color.BLUE
+        self.species = 0
 
 
 class RedParticle(Particle):
     def __init__(self, position: Position) -> None:
         super().__init__(position)
-        self.color = Color.RED
+        self.species = 1
 
 
 class GreenParticle(Particle):
     def __init__(self, position: Position) -> None:
         super().__init__(position)
-        self.color = Color.GREEN
+        self.species = 2

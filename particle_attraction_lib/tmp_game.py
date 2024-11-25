@@ -25,11 +25,14 @@ class TemporaryGame:
                                                      another_species=another_particle.species)
         a_particle.accelerate(vector * F)
 
-    def particles_tick(self):
+    def tick(self):
         for particle in self.particle_repository.all():
             for other_particle in self.particle_repository.neighbors_of(particle):
                 if particle != other_particle:
                     self.update(particle, other_particle)
+        self.move()
+
+    def move(self):
         for particle in self.particle_repository.all():
             particle.move()
             particle.apply_friction(0.80)
@@ -54,27 +57,23 @@ def configure_attraction_law():
     return attraction_law
 
 
-def init_game(board: Board):
+def init_game(board: Board, attraction_parameters, number_of_particles:int):
     attraction_law = configure_attraction_law()
-    attraction_parameters = AttractionParameters(
-        size_of_attraction=75,
-        absolute_repulsion=5,
-        force_factor=200)
     attraction_force = AttractionForce(attraction_parameters=attraction_parameters, attraction_law=attraction_law)
 
     distance = TorusDistance(board)
 
-    particles = create_particles(board)
+    particles = create_particles(board, number_of_particles)
 
     game = TemporaryGame(distance=distance, attraction_force=attraction_force, board=board,
                          particle_repository=particles)
     return game
 
 
-def create_particles(board):
+def create_particles(board, number_of_particles):
     particles = ParticleRepository()
     particles.add_multiple([Particle(position=Position(x=random.randint(-int(board.width / 2), int(board.width / 2)),
                                                        y=random.randint(-int(board.height / 2), int(board.height / 2))),
                                      species=random.randint(0, 2)) for _ in
-                            range(180)])
+                            range(number_of_particles)])
     return particles

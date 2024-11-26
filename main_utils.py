@@ -6,6 +6,7 @@ from particle_attraction_lib.attraction_force import AttractionForce
 from particle_attraction_lib.attraction_law import AttractionLaw
 from particle_attraction_lib.board import Board
 from particle_attraction_lib.distance import TorusDistance
+from particle_attraction_lib.mover import TorusMover
 from particle_attraction_lib.particle import Particle, Position
 from particle_attraction_lib.particle_repository import ParticleRepository
 from particle_attraction_lib.game import Game
@@ -30,18 +31,23 @@ def init_game(board: Board, attraction_parameters, number_of_particles: int):
     attraction_force = AttractionForce(attraction_parameters=attraction_parameters, attraction_law=attraction_law)
 
     distance = TorusDistance(board)
-
+    mover = TorusMover(board)
     particles = create_particles(board, number_of_particles)
 
-    game = Game(distance=distance, attraction_force=attraction_force, board=board,
+    game = Game(distance=distance,
+                attraction_force=attraction_force,
+                board=board,
+                mover=mover,
                 particle_repository=particles)
     return game
 
 
 def create_particles(board, number_of_particles):
     particles = ParticleRepository()
-    particles.add_multiple([Particle(position=Position(x=random.randint(-int(board.width / 2), int(board.width / 2)),
+    all_particles_to_add = [Particle(position=Position(x=random.randint(-int(board.width / 2), int(board.width / 2)),
                                                        y=random.randint(-int(board.height / 2), int(board.height / 2))),
                                      species=random.randint(0, 2)) for _ in
-                            range(number_of_particles)])
+                            range(number_of_particles)]
+    for particle in all_particles_to_add:
+        particles.add(particle)
     return particles

@@ -3,6 +3,7 @@ from __future__ import annotations
 from particle_attraction_lib.attraction_force import AttractionForce
 from particle_attraction_lib.board import Board
 from particle_attraction_lib.distance import DistanceInterface
+from particle_attraction_lib.mover import MoverInterface
 from particle_attraction_lib.particle import Particle
 from particle_attraction_lib.particle_repository import ParticleRepository
 
@@ -11,11 +12,13 @@ class Game:
     def __init__(self,
                  board: Board,
                  distance: DistanceInterface,
+                 mover: MoverInterface,
                  attraction_force: AttractionForce,
                  particle_repository: ParticleRepository):
         self.distance = distance
         self.attraction_force = attraction_force
         self.board = board
+        self.mover = mover
         self.particle_repository = particle_repository
 
     def tick(self):
@@ -27,6 +30,7 @@ class Game:
 
     def _update_all_particles(self):
         for particle in self.particle_repository:
+            particle.apply_friction(0.85)
             self._update(particle)
 
     def _update(self, particle):
@@ -42,9 +46,6 @@ class Game:
 
     def _move_all_particles(self):
         for particle in self.particle_repository:
-            particle.move()
-            particle.apply_friction(0.85)
-            particle.position.x = particle.position.x % self.board.height
-            particle.position.y = particle.position.y % self.board.width
+            self.mover.apply_movement(particle=particle)
 
 

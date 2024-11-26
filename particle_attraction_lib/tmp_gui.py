@@ -1,6 +1,6 @@
 import pygame
 
-from particle_attraction_lib.tmp_game import TemporaryGame
+from particle_attraction_lib.game import Game
 
 
 class PygameGui:
@@ -10,7 +10,7 @@ class PygameGui:
         self.screen = pygame.display.set_mode(self.screen_size)
         self.clock = pygame.time.Clock()
 
-    def draw(self, game: TemporaryGame):
+    def draw(self, game: Game):
         self.screen.fill((0, 0, 0))
 
         for particle in game.all_particles():

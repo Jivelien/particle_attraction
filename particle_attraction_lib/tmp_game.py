@@ -26,21 +26,21 @@ class TemporaryGame:
         a_particle.accelerate(vector * F)
 
     def tick(self):
-        for particle in self.particle_repository.all():
+        for particle in self.particle_repository:
             for other_particle in self.particle_repository.neighbors_of(particle):
                 if particle != other_particle:
                     self.update(particle, other_particle)
         self.move()
 
     def move(self):
-        for particle in self.particle_repository.all():
+        for particle in self.particle_repository:
             particle.move()
-            particle.apply_friction(0.80)
+            particle.apply_friction(0.85)
             particle.position.x = particle.position.x % self.board.height
             particle.position.y = particle.position.y % self.board.width
 
     def all_particles(self):
-        return self.particle_repository.all()
+        return self.particle_repository.__iter__()
 
 
 def configure_attraction_law():

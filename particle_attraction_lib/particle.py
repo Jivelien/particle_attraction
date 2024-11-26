@@ -26,21 +26,3 @@ class Particle:
 
     def apply_friction(self, factor: float) -> None:
         self.velocity *= factor
-
-
-class BlueParticle(Particle):
-    def __init__(self, position: Position) -> None:
-        super().__init__(position)
-        self.species = 0
-
-
-class RedParticle(Particle):
-    def __init__(self, position: Position) -> None:
-        super().__init__(position)
-        self.species = 1
-
-
-class GreenParticle(Particle):
-    def __init__(self, position: Position) -> None:
-        super().__init__(position)
-        self.species = 2

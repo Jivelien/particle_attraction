@@ -37,6 +37,6 @@ class TestParticleRepository(unittest.TestCase):
         another_particle = Particle(position=Position(x=0, y=0))
         pr.add_multiple([a_particle, another_particle])
 
-        sut = pr.all()
+        sut = [particle for particle in pr]
 
         self.assertEqual(sut, [a_particle, another_particle])

@@ -19,5 +19,5 @@ class ParticleRepository:
     def neighbors_of(self, particle: Particle):
         return [other_particle for other_particle in self._all_particles if particle != other_particle]
 
-    def all(self):
-        return self._all_particles.copy()
+    def __iter__(self):
+        return self._all_particles.copy().__iter__()

@@ -5,7 +5,7 @@ import time
 from particle_attraction_lib.attraction_force import AttractionParameters
 from particle_attraction_lib.board import Board
 from main_utils import init_game
-from particle_attraction_lib.tmp_gui import PygameGui
+from particle_attraction_lib.gui import PygameGui
 
 
 def run_with_monitoring(game, gui):
@@ -38,21 +38,22 @@ def run(game, gui):
 
 
 def main():
-    board = Board(500, 500)
+    board = Board(300, 200)
 
     attraction_parameters = AttractionParameters(
         size_of_attraction=90,
         absolute_repulsion=10,
-        force_factor=175)
+        force_factor=200)
 
     game = init_game(board=board,
                      attraction_parameters=attraction_parameters,
                      number_of_particles=250)
 
-    screen_size = (1200, 1200)
+    screen_size = (board.width*3, board.height*3)
     gui = PygameGui(screen_size)
 
-    run_with_monitoring(game, gui)
+    # run_with_monitoring(game, gui)
+    run(game, gui)
 
 
 if __name__ == '__main__':

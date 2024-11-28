@@ -16,4 +16,4 @@ class AttractionLaw(AttractionLawInterface):
         return self.laws.get((a_species, another_species), 0)
 
     def add(self, a_species: int, another_species: int, attraction: float) -> None:
-        self.laws[a_species, another_species] = attraction
+        self.laws[(a_species, another_species)] = attraction

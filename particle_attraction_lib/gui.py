@@ -81,7 +81,7 @@ class PygameGui:
         for idx, (key, value) in enumerate(game.attraction_force.attraction_law.laws.items()): #TODO: IMPROVE
             self._draw_interaction_controller(idx, key, value)
 
-        self._draw_parameters_controller(idx+1, "Size of attraction", game.attraction_force.attraction_parameters.size_of_attraction, 1, 200)
+        self._draw_parameters_controller(idx+1, "Size of attraction", game.attraction_force.attraction_parameters.size_of_attraction, 1, 250)
         self._draw_parameters_controller(idx+2, "Absolute repulsion", game.attraction_force.attraction_parameters.absolute_repulsion, 0, 50)
         self._draw_parameters_controller(idx+3, "Force reduction factor", game.attraction_force.attraction_parameters.force_factor, 1, 200)
 

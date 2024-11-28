@@ -38,16 +38,16 @@ def run(game, gui):
 
 
 def main():
-    board = Board(600, 450)
+    board = Board(2000, 2000)
 
     attraction_parameters = AttractionParameters(
-        size_of_attraction=70,
-        absolute_repulsion=5,
-        force_factor=200)
+        size_of_attraction=250,
+        absolute_repulsion=20,
+        force_factor=150)
 
     game = init_game(board=board,
                      attraction_parameters=attraction_parameters,
-                     number_of_particles=250,
+                     number_of_particles=275,
                      number_of_species=6)
 
     screen_size = (1500, 1500)

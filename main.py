@@ -38,18 +38,19 @@ def run(game, gui):
 
 
 def main():
-    board = Board(300, 200)
+    board = Board(600, 450)
 
     attraction_parameters = AttractionParameters(
-        size_of_attraction=90,
-        absolute_repulsion=10,
+        size_of_attraction=70,
+        absolute_repulsion=5,
         force_factor=200)
 
     game = init_game(board=board,
                      attraction_parameters=attraction_parameters,
-                     number_of_particles=250)
+                     number_of_particles=250,
+                     number_of_species=6)
 
-    screen_size = (board.width*3, board.height*3)
+    screen_size = (1500, 1500)
     gui = PygameGui(screen_size)
 
     # run_with_monitoring(game, gui)

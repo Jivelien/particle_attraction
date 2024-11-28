@@ -1,8 +1,15 @@
+import dataclasses
+from typing import Tuple
+
 import pygame
 import pygame_gui
 
 from particle_attraction_lib.game import Game
 
+@dataclasses.dataclass
+class Color:
+    name: str
+    hex: Tuple[int,int,int]
 
 class PygameGui:
     def __init__(self, screen_size):
@@ -14,7 +21,6 @@ class PygameGui:
         self.screen = pygame.display.set_mode(self.screen_size, pygame.RESIZABLE)
         self.clock = pygame.time.Clock()
         self.manager = pygame_gui.UIManager((self.screen_size[0], self.screen_size[1]))
-
         self.interaction_controllers = {}
         self.parameters_controllers = {}
 
@@ -27,13 +33,13 @@ class PygameGui:
                                                                       manager=self.manager)
 
             label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect((210, y_position), (150, 25)),
-                                                          text=f"{self._color_name(key[0])} -> {self._color_name(key[1])}: {float(value)}",
-                                                          manager=self.manager )
+                                                text=f"{self._color(key[0]).name} -> {self._color(key[1]).name}: {float(value)}",
+                                                manager=self.manager)
             self.interaction_controllers[key] = (label, slider)
         else:
             ui_item = self.interaction_controllers.get(key)
             slider_value = round(ui_item[1].get_current_value(),2)
-            ui_item[0].set_text(f"{self._color_name(key[0])} -> {self._color_name(key[1])}: {slider_value}")
+            ui_item[0].set_text(f"{self._color(key[0]).name} -> {self._color(key[1]).name}: {slider_value}")
 
     def _draw_parameters_controller(self, i, key, value, min, max):
         if not self.parameters_controllers.get(key):
@@ -50,14 +56,22 @@ class PygameGui:
         else:
             self.parameters_controllers.get(key)[0].set_text(f"{key}: {value}")
 
-    def _color_name(self, i:int):
+    def _color(self, i:int):
         match i:
             case 0:
-                return "Red"
+                return Color("Red",(255,0,0))
             case 1:
-                return "Green"
+                return Color("Green",(0,255,0))
             case 2:
-                return "Blue"
+                return Color("Blue",(0,0,255))
+            case 3:
+                return Color("Cyan",(0,255,255))
+            case 4:
+                return Color("Magenta",(255,0,255))
+            case 5:
+                return Color("Yellow",(255,255,0))
+            case _:
+                return Color("None",(0,0,0))
 
     def draw(self, game: Game):
         self.screen.fill((0, 0, 0))
@@ -78,16 +92,7 @@ class PygameGui:
         game.attraction_force.attraction_parameters.force_factor = self.parameters_controllers["Force reduction factor"][1].get_current_value()
 
         for particle in game.all_particles():
-            match particle.species:
-                case 0:
-                    color = (255, 0, 0)
-                case 1:
-                    color = (0, 255, 0)
-                case 2:
-                    color = (0, 0, 255)
-                case _:
-                    color = (255, 255, 255)
-
+            color = self._color(particle.species).hex
             pygame.draw.circle(self.screen, color,
                                (int((particle.position.x / game.board.width) * self.screen_size[0]),
                                 int((particle.position.y / game.board.height) * self.screen_size[1])), 5)
